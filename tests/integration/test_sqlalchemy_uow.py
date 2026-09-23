@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from proyecto_final.application.dtos import (
@@ -12,9 +12,7 @@ from proyecto_final.application.use_cases import (
     CreateOrder,
     GetOrder,
 )
-from proyecto_final.infrastructure.database.base import (
-    Base,
-)
+from proyecto_final.infrastructure.database.base import Base
 from proyecto_final.infrastructure.notifications.memory import (
     MemoryNotificationAdapter,
 )
@@ -34,12 +32,12 @@ def test_create_order_is_persisted() -> None:
 
     Base.metadata.create_all(engine)
 
-    test_session_factory: sessionmaker[Session] = sessionmaker(
+    session_factory = sessionmaker(
         bind=engine,
         expire_on_commit=False,
     )
 
-    uow = SQLAlchemyUnitOfWork(test_session_factory)
+    uow = SQLAlchemyUnitOfWork(session_factory)
 
     notification = MemoryNotificationAdapter()
 
@@ -64,7 +62,7 @@ def test_create_order_is_persisted() -> None:
 
     uow.close()
 
-    second_uow = SQLAlchemyUnitOfWork(test_session_factory)
+    second_uow = SQLAlchemyUnitOfWork(session_factory)
 
     get_order = GetOrder(second_uow.orders)
 

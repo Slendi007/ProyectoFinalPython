@@ -1,11 +1,9 @@
-from sqlalchemy.orm import Session, sessionmaker
+from collections.abc import Callable
 
-from proyecto_final.application.ports import (
-    OrderRepository,
-)
-from proyecto_final.infrastructure.database import (
-    SessionLocal,
-)
+from sqlalchemy.orm import Session
+
+from proyecto_final.application.ports import OrderRepository
+from proyecto_final.infrastructure.database import SessionLocal
 from proyecto_final.infrastructure.repositories import (
     SQLAlchemyOrderRepository,
 )
@@ -14,7 +12,7 @@ from proyecto_final.infrastructure.repositories import (
 class SQLAlchemyUnitOfWork:
     def __init__(
         self,
-        session_factory: sessionmaker[Session] = SessionLocal,
+        session_factory: Callable[[], Session] = SessionLocal,
     ) -> None:
         self.session = session_factory()
 

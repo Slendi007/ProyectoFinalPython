@@ -6,16 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from proyecto_final.application.ports import (
-    OrderRepository,
-)
-from proyecto_final.domain.entities import (
-    Order,
-    OrderItem,
-)
-from proyecto_final.infrastructure.database.base import (
-    Base,
-)
+from proyecto_final.application.ports import OrderRepository
+from proyecto_final.domain.entities import Order, OrderItem
+from proyecto_final.infrastructure.database.base import Base
 from proyecto_final.infrastructure.repositories import (
     MemoryOrderRepository,
     SQLAlchemyOrderRepository,

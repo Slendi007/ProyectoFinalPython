@@ -1,10 +1,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from proyecto_final.domain.entities import (
-    Order,
-    OrderItem,
-)
+from proyecto_final.domain.entities import Order, OrderItem
 from proyecto_final.infrastructure.database.models import (
     OrderItemModel,
     OrderModel,
