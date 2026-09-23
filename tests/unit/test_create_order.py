@@ -1,10 +1,6 @@
-import pytest
-
-from proyecto_final.domain.exceptions import (
-    EmptyOrderError,
-)
-
 from decimal import Decimal
+
+import pytest
 
 from proyecto_final.application.dtos import (
     CreateOrderCommand,
@@ -12,6 +8,9 @@ from proyecto_final.application.dtos import (
 )
 from proyecto_final.application.use_cases import (
     CreateOrder,
+)
+from proyecto_final.domain.exceptions import (
+    EmptyOrderError,
 )
 from proyecto_final.infrastructure.notifications.memory import (
     MemoryNotificationAdapter,
