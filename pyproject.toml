@@ -35,3 +35,49 @@ dev = [
     "pre-commit (>=4.6.2,<5.0.0)",
     "pip-audit (>=2.10.1,<3.0.0)"
 ]
+
+[tool.ruff]
+target-version = "py314"
+line-length = 88
+exclude = [
+    ".venv",
+    "alembic/versions",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "B",
+    "UP",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.mypy]
+python_version = "3.14"
+strict = true
+pretty = true
+show_error_codes = true
+warn_unreachable = true
+
+exclude = [
+    "alembic/versions/",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-ra"
+
+[tool.coverage.run]
+source = ["proyecto_final"]
+branch = true
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false

@@ -1,16 +1,20 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import Session, sessionmaker
 
-DATABASE_URL = "sqlite:///./orders.db"
+from proyecto_final.infrastructure.config import (
+    get_settings,
+)
+
+settings = get_settings()
 
 engine = create_engine(
-    DATABASE_URL,
+    settings.database_url,
     connect_args={
         "check_same_thread": False,
     },
 )
 
-SessionLocal = sessionmaker(
+SessionLocal: sessionmaker[Session] = sessionmaker(
     bind=engine,
     autoflush=False,
     expire_on_commit=False,

@@ -9,11 +9,17 @@ from proyecto_final.domain.exceptions import (
     DomainError,
     OrderNotFoundError,
 )
+from proyecto_final.infrastructure.config import (
+    get_settings,
+)
+
+settings = get_settings()
 
 app = FastAPI(
-    title="Proyecto Final - Orders API",
+    title=settings.app_name,
     description=("Servicio de órdenes utilizando Arquitectura Hexagonal y Limpia."),
-    version="1.0.0",
+    version=settings.app_version,
+    debug=settings.debug,
 )
 
 app.include_router(auth_router)

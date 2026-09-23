@@ -1,30 +1,32 @@
-import os
 from datetime import UTC, datetime, timedelta
 
 import jwt
 
+from proyecto_final.infrastructure.config import (
+    get_settings,
+)
+
 
 class TokenValidationError(Exception):
-    "_______El token JWT no es válido______"
+    "____El token JWT no es válido._____"
 
 
 class JWTService:
-    ALGORITHM = "HS256"
-    ACCESS_TOKEN_MINUTES = 30
-
     def __init__(self) -> None:
-        secret_key = os.getenv("JWT_SECRET_KEY")
+        settings = get_settings()
 
-        if not secret_key:
+        if settings.jwt_secret_key is None:
             raise RuntimeError("JWT_SECRET_KEY no está configurada!")
 
-        self.secret_key = secret_key
+        self.secret_key = settings.jwt_secret_key.get_secret_value()
+        self.algorithm = settings.jwt_algorithm
+        self.access_token_minutes = settings.access_token_minutes
 
     def create_access_token(
         self,
         subject: str,
     ) -> str:
-        expires_at = datetime.now(UTC) + timedelta(minutes=self.ACCESS_TOKEN_MINUTES)
+        expires_at = datetime.now(UTC) + timedelta(minutes=self.access_token_minutes)
 
         payload = {
             "sub": subject,
@@ -34,7 +36,7 @@ class JWTService:
         return jwt.encode(
             payload,
             self.secret_key,
-            algorithm=self.ALGORITHM,
+            algorithm=self.algorithm,
         )
 
     def decode_access_token(
@@ -45,21 +47,17 @@ class JWTService:
             payload = jwt.decode(
                 token,
                 self.secret_key,
-                algorithms=[self.ALGORITHM],
+                algorithms=[
+                    self.algorithm,
+                ],
             )
 
             subject = payload.get("sub")
 
-            if not isinstance(
-                subject,
-                str,
-            ):
+            if not isinstance(subject, str):
                 raise TokenValidationError("Token inválido!")
 
             return subject
 
         except jwt.InvalidTokenError as exc:
             raise TokenValidationError("Token inválido o expirado!") from exc
-
-
-# clave secreta: GR6xiVofhso0fypmR-YnQAXLWjyF2F9LygeZz4kyfBE
