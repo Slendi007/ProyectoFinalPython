@@ -1,0 +1,17 @@
+from typing import Protocol
+
+from proyecto_final.domain.entities import Order
+
+
+class OrderRepository(Protocol):
+    def add(self, order: Order) -> None:
+        ...
+
+    def get(self, order_id: int) -> Order | None:
+        ...
+
+    def list_all(self) -> list[Order]:
+        ...
+
+    def delete(self, order_id: int) -> bool:
+        ...
