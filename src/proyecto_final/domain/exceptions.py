@@ -12,3 +12,7 @@ class InvalidPriceError(DomainError):
 
 class EmptyOrderError(DomainError):
     "____La orden no contiene productos.____"
+
+
+class OrderNotFoundError(DomainError):
+    "____La orden solicitada no existe____"
